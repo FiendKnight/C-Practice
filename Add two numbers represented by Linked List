@@ -1,0 +1,147 @@
+//{ Driver Code Starts
+// driver
+// CPP code for adding numbers represented by Linked List
+#include <bits/stdc++.h>
+using namespace std;
+
+/* Linked list Node */
+struct Node {
+    int data;
+    struct Node* next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+struct Node* buildList(int size)
+{
+    int val;
+    cin>> val;
+    
+    Node* head = new Node(val);
+    Node* tail = head;
+    
+    for(int i=0; i<size-1; i++)
+    {
+        cin>> val;
+        tail->next = new Node(val);
+        tail = tail->next;
+    }
+    
+    return head;
+}
+
+void printList(Node* n)
+{
+    while(n)
+    {
+        cout<< n->data << " ";
+        n = n->next;
+    }
+    cout<< endl;
+}
+
+
+// } Driver Code Ends
+/* node for linked list:
+
+struct Node {
+    int data;
+    struct Node* next;
+    Node(int x) {
+        data = x;
+        next = NULL;
+    }
+};
+
+*/
+
+class Solution
+{
+    public:
+    //Function to add two numbers represented by linked list.
+    struct Node*reverse(struct Node*head){
+        Node *prev=NULL;
+        Node *next=NULL;
+        Node *curr=head;
+        while(curr){
+            next=curr->next;
+            curr->next=prev;
+            prev=curr;
+            curr=next;
+        }
+        head=prev;
+        return head;
+    }
+    struct Node* addTwoLists(struct Node* L1, struct Node* L2)
+    {
+        L1=reverse(L1);
+        L2=reverse(L2);
+        int carry=0;
+        int sum=L1->data+L2->data+carry;
+        carry=sum/10;
+        Node* L3=new Node(sum%10);
+        Node* head=L3;
+        L2=L2->next;
+        L1=L1->next;
+        while(L1&&L2){
+            sum=L1->data+L2->data+carry;
+            carry=sum/10;
+            L3->next= new Node(sum%10);
+            L3=L3->next;
+            L2=L2->next;
+            L1=L1->next;
+        }
+        while(L1){
+            sum=L1->data+carry;
+            carry=sum/10;
+            //sum=sum%10;
+            L3->next= new Node(sum%10);
+            L3=L3->next;
+            //L2=L2->next;
+            L1=L1->next;
+        }
+        while(L2){
+            sum=L2->data+carry;
+            carry=sum/10;
+            //sum=sum%10;
+            L3->next= new Node(sum%10);
+            L3=L3->next;
+            L2=L2->next;
+            //L1=L1->next;
+        }
+        if(carry>=1){
+            L3->next=new Node(carry);
+        }
+        
+        
+        return reverse(head);
+        
+    }
+};
+
+
+//{ Driver Code Starts.
+
+int main()
+{
+    int t;
+    cin>>t;
+    while(t--)
+    {
+        int n, m;
+        
+        cin>>n;
+        Node* first = buildList(n);
+        
+        cin>>m;
+        Node* second = buildList(m);
+        Solution ob;
+        Node* res = ob.addTwoLists(first,second);
+        printList(res);
+    }
+    return 0;
+}
+
+// } Driver Code Ends
